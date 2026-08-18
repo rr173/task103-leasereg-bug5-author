@@ -23,6 +23,9 @@ func (s *Server) handleAnalysis(w http.ResponseWriter, r *http.Request) {
 	}
 	analysis.Warnings = append(analysis.Warnings, analysis.HealthReasons()...)
 	auditFindings := leaseaudit.Check(analysis)
+	if auditFindings == nil {
+		auditFindings = []leaseaudit.Finding{}
+	}
 	thresholds := lease.DefaultThresholds()
 	writeJSON(w, http.StatusOK, map[string]any{
 		"analysis":                 analysis,
