@@ -16,7 +16,7 @@ type Finding struct {
 // operations. Keeping this in its own package makes the audit policy
 // reusable by HTTP and future offline recovery tooling.
 func Check(snapshot lease.Analysis) []Finding {
-	var findings []Finding
+	findings := make([]Finding, 0)
 	for _, item := range snapshot.Resources {
 		if item.Expired && !item.Held {
 			findings = append(findings, Finding{
